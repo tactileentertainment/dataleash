@@ -38,5 +38,5 @@ setup(
     packages=find_packages(exclude=['contrib', 'docs', 'tests*']),
     test_suite='tests',
     dependency_links=[
-        'https://github.com/tactileentertainment/pandas-bigquery.git@prerelease#egg=pandas-bigquery-0.9.0']
+        'git+https://github.com/tactileentertainment/pandas-bigquery.git@prerelease#egg=pandas-bigquery-0.9.0']
 )
