@@ -50,7 +50,8 @@ class BigqueryConnector(Connector):
             pass
 
     def query(self, query):
-        return self.bigquery.query(query, strict=False)
+        result, tries = self.bigquery.run_with_retry(self.bigquery.query, query=query, strict=False)
+        return result
 
     def append_test_result(self, timestamp, test_name, passed, error):
         dataframe = pd.DataFrame(
@@ -58,9 +59,10 @@ class BigqueryConnector(Connector):
              'test': [test_name],
              'pass': [passed],
              'error': [error]})
-        return self.bigquery.upload(dataframe,
-                                    f"{self.dataset}.{self.tests_table}${datetime.now().strftime('%Y%m%d')}",
-                                    if_exists='append')
+        self.bigquery.run_with_retry(self.bigquery.upload,
+                                     dataframe=dataframe,
+                                     destination_table=f"{self.dataset}.{self.tests_table}${datetime.now().strftime('%Y%m%d')}",
+                                     if_exists='append')
 
     def append_signal_metric(self, timestamp, signal_name, metric, value):
         dataframe = pd.DataFrame(
@@ -68,9 +70,10 @@ class BigqueryConnector(Connector):
              'signal': [signal_name],
              'metric': [metric],
              'value': [float(value)]})
-        return self.bigquery.upload(dataframe,
-                                    f"{self.dataset}.{self.signals_table}${datetime.now().strftime('%Y%m%d')}",
-                                    if_exists='append')
+        self.bigquery.run_with_retry(self.bigquery.upload,
+                                     dataframe=dataframe,
+                                     destination_table=f"{self.dataset}.{self.signals_table}${datetime.now().strftime('%Y%m%d')}",
+                                     if_exists='append')
 
     def get_signals(self, signal_names, min_timestamp, max_timestamp):
         signals_string = ",".join(list(map(lambda signal: f"'{signal}'", signal_names)))
