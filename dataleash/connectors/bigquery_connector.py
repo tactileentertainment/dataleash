@@ -77,7 +77,7 @@ class BigqueryConnector(Connector):
 
     def get_signals(self, signal_names, min_timestamp, max_timestamp):
         signals_string = ",".join(list(map(lambda signal: f"'{signal}'", signal_names)))
-        query = f"""select * from {self.dataset}.{self.signals_table}
+        query = f"""select date(_partitionTime) as estimationDate, * from {self.dataset}.{self.signals_table}
                                 where 
                                 signal in ({signals_string}) 
                                 and _partitionTime between '{max_timestamp.strftime('%Y-%m-%d')}' 
