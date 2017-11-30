@@ -16,9 +16,9 @@ class Test:
         if len(list(set(self.signals) & set(updated_signals))) > 0:
             timestamp = datetime.now()
             dataframe = connector.get_signals(self.signals, self.min_timestamp, self.max_timestamp)
-            result, error = self.__run(dataframe)
+            result, error = self._test(dataframe)
             connector.append_test_result(timestamp, self.name, result, error)
 
     @abstractmethod
-    def __run(self, dataframe):
+    def _test(self, dataframe):
         return True, None
