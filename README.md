@@ -1,2 +1,2 @@
 # dataleash
-Framework to run data validity tests
+Framework to manage and run data validity tests
