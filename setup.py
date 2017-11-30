@@ -12,7 +12,7 @@ def readme():
 INSTALL_REQUIRES = [
     'croniter>=0.3.20',
     'pandas>=0.21.0',
-    'git+https://github.com/tactileentertainment/pandas-bigquery.git@prerelease#egg=pandas-bigquery-0.9.0'
+    'pandas-bigquery>=0.9.0'
 ]
 
 setup(
@@ -37,4 +37,6 @@ setup(
     install_requires=INSTALL_REQUIRES,
     packages=find_packages(exclude=['contrib', 'docs', 'tests*']),
     test_suite='tests',
+    dependency_links=[
+        'https://github.com/tactileentertainment/pandas-bigquery.git@prerelease#egg=pandas-bigquery-0.9.0']
 )
